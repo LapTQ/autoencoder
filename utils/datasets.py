@@ -36,7 +36,7 @@ class AddressDataset(keras.utils.Sequence):
         self.invert_color = invert_color
 
     def __len__(self):
-        return len(self.img_paths)
+        return len(self.img_paths) // (self.batch_size if self.batch_size is not None else 1)
 
     def __getitem__(self, idx):
         """Return images in batch if batch_size is not None."""

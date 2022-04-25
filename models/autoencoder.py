@@ -3,8 +3,8 @@ from tensorflow.keras import layers, models
 
 
 class Autoencoder(models.Model):
-    def __init__(self):
-        super(Autoencoder, self).__init__()
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
         self.encoder = Encoder()
         self.decoder = Decoder()
 
@@ -16,14 +16,14 @@ class Autoencoder(models.Model):
         #   y = model(x).numpy()
         #   y_batch.append(y)
         encoded = self.encoder(x)
-        decoded = self.encoder(encoded)
+        decoded = self.decoder(encoded)
 
         return decoded
 
 
 class Encoder(models.Model):
-    def __init__(self):
-        super(Encoder, self).__init__()
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
 
         self.sequential = keras.Sequential([
             # layers.ZeroPadding2D(padding=3),
@@ -69,8 +69,8 @@ class Encoder(models.Model):
 
 
 class Decoder(models.Model):
-    def __init__(self):
-        super(Decoder, self).__init__()
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
 
         self.sequential = keras.Sequential([
             layers.Conv2DTranspose(filters=2048, kernel_size=1, strides=1),
@@ -100,7 +100,7 @@ class Decoder(models.Model):
             layers.UpSampling2D(size=2),
             layers.ReLU(),
             layers.BatchNormalization(axis=3),
-            layers.Conv2DTranspose(filters=3, kernel_size=7, strides=2),
+            layers.Conv2DTranspose(filters=3, kernel_size=7, strides=2, activation='sigmoid'),
         ])
 
     def call(self, x):
@@ -173,17 +173,18 @@ class IdentityBlockTranspose(layers.Layer):
         self.conv3 = layers.Conv2DTranspose(filters=f3, kernel_size=1, strides=1, padding='valid')
 
     def call(self, x):
+
+        x = self.conv1(x)
         x = self.bn1(x)
         x = self.relu1(x)
-        x = self.conv1(x)
 
+        x = self.conv2(x)
         x = self.bn2(x)
         x = self.relu2(x)
-        x = self.conv2(x)
 
+        x = self.conv3(x)
         x = self.bn3(x)
         x = self.relu3(x)
-        x = self.conv3(x)
 
         return x
 
@@ -257,17 +258,18 @@ class ConvolutionalBlockTranspose(layers.Layer):
         self.conv3 = layers.Conv2DTranspose(filters=f3, kernel_size=1, strides=1, padding='valid')
 
     def call(self, x):
+
+        x = self.conv1(x)
         x = self.bn1(x)
         x = self.relu1(x)
-        x = self.conv1(x)
 
+        x = self.conv2(x)
         x = self.bn2(x)
         x = self.relu2(x)
-        x = self.conv2(x)
 
+        x = self.conv3(x)
         x = self.bn3(x)
         x = self.relu3(x)
-        x = self.conv3(x)
 
         return x
 

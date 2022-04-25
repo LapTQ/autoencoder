@@ -1,11 +1,7 @@
 import argparse
 from models.autoencoder import *
 from utils.datasets import *
-import numpy as np
-import matplotlib.pyplot as plt
-import tensorflow as tf
-from tensorflow import keras
-from tensorflow.keras import losses, callbacks
+from tensorflow.keras import callbacks
 
 def train(
         epochs,

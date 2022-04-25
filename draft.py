@@ -1,15 +1,15 @@
 from models.autoencoder import *
 from utils.datasets import *
 import numpy as np
-import matplotlib.pyplot as plt
 
 # i_layer = IdentityBlock(filters=[4, 4, 3], f=2)
 # c_layer = ConvolutionalBlock(filters=[4, 4, 3], f=2, s=2)
-# encoder = Encoder()
-# decoder = Decoder()
-# x = np.ones((1, 133, 1925, 3))
-# latent = encoder(x)
-# x_re = decoder(latent)
+encoder = Encoder()
+decoder = Decoder()
+x = np.ones((4, 133, 1925, 3))
+latent = encoder(x)
+x_re = decoder(latent)
+# print(x_re)
 
 dataset = AddressDataset(
     img_dir='data/data_samples_2',
@@ -18,11 +18,23 @@ dataset = AddressDataset(
     invert_color=True
 )
 
-imgs = next(iter(dataset))
-print(imgs.shape)
-plt.figure(figsize=(20, 3))
-plt.imshow(imgs[0])
-plt.show()
+train_dataset = tf.data.Dataset.from_tensor_slices(
+    [str(path) for path in Path('data/data_samples_2').glob('*.png')]
+)
+train_dataset = train_dataset.map(
+    lambda x: load_img(x, True, (133, 1925))
+)
+train_dataset = train_dataset.batch(4)
+
+for xs in train_dataset.take(1):
+    print(xs.shape)
+
+#
+# imgs = next(iter(dataset))
+# print(imgs.shape)
+# plt.figure(figsize=(20, 3))
+# plt.imshow(imgs[0])
+# plt.show()
 
 
 
