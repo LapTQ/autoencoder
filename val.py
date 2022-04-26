@@ -11,13 +11,19 @@ def run(
         target_height,
         target_width
 ):
-    autoencoder = models.load_model(weights)
-    # autoencoder = Autoencoder()
 
-    img = load_img(img, invert_color=invert_color, target_size=(target_height, target_width))
-    img = process_img(img)
+    img = load_img(img)
+    img = process_img(
+        img,
+        invert_color=invert_color,
+        target_size=(target_height, target_width),
+        normalize=True
+    )
     img = np.expand_dims(img, axis=0)
-    #
+
+    autoencoder = models.load_model(weights)
+
+    # autoencoder = Autoencoder()
     # autoencoder(img)
     # autoencoder.load_weights('checkpoints/checkpoint/variables.data-00000-of-00001')
 

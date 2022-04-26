@@ -24,16 +24,21 @@ train_dataset = get_tf_dataset(
     img_dir='data/data_samples_2',
     target_size=(69, 773),
     batch_size=4,
+    grayscale=True,
     invert_color=True,
+    dilate=1,
     normalize=True
 )
 
-
+plt.figure(figsize=(40, 3))
 for imgs, _ in train_dataset.take(1):
     print(imgs.shape)
 
     for img in imgs:
-        plt.imshow(img)
+        img = tf.where(img > 0.4, 1, 0)
+        plt.imshow(img, cmap='gray')
+        plt.axis('off')
+        plt.tight_layout()
         plt.show()
         break
 

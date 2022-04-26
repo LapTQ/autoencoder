@@ -1,3 +1,4 @@
+import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras import layers, models
 
@@ -108,10 +109,13 @@ class Decoder(models.Model):
         x = self.sequential(x)
         return x
 
-
+@tf.keras.utils.register_keras_serializable()
 class IdentityBlock(layers.Layer):
     def __init__(self, filters, f, **kwargs):
         super(IdentityBlock, self).__init__(**kwargs)
+
+        self.filters = filters
+        self.f = f
 
         f1, f2, f3 = filters
 
@@ -151,10 +155,38 @@ class IdentityBlock(layers.Layer):
 
         return x
 
+    def get_config(self):
+        config = super(IdentityBlock, self).get_config()
+        config.update(
+            {
+                'filters': self.filters,
+                'f': self.f,
 
+                'conv1': self.conv1,
+                'bn1': self.bn1,
+                'relu1': self.relu1,
+
+                'conv2': self.conv2,
+                'bn2': self.bn2,
+                'relu2': self.relu2,
+
+                'conv3': self.conv3,
+                'bn3': self.bn3,
+
+                'add': self.add,
+                'relu3': self.relu3
+            }
+        )
+
+        return config
+
+@tf.keras.utils.register_keras_serializable()
 class IdentityBlockTranspose(layers.Layer):
     def __init__(self, filters, f, **kwargs):
         super(IdentityBlockTranspose, self).__init__(**kwargs)
+
+        self.filters = filters
+        self.f = f
 
         f1, f2, f3 = filters
 
@@ -189,10 +221,37 @@ class IdentityBlockTranspose(layers.Layer):
 
         return x
 
+    def get_config(self):
+        config = super(IdentityBlockTranspose, self).get_config()
+        config.update(
+            {
+                'filters': self.filters,
+                'f': self.f,
 
+                'conv1': self.conv1,
+                'bn1': self.bn1,
+                'relu1': self.relu1,
+
+                'conv2': self.conv2,
+                'bn2': self.bn2,
+                'relu2': self.relu2,
+
+                'conv3': self.conv3,
+                'bn3': self.bn3,
+                'relu3': self.relu3,
+            }
+        )
+
+        return config
+
+@tf.keras.utils.register_keras_serializable()
 class ConvolutionalBlock(layers.Layer):
     def __init__(self, filters, f, s, **kwargs):
         super(ConvolutionalBlock, self).__init__(**kwargs)
+
+        self.filters = filters
+        self.f = f
+        self.s = s
 
         f1, f2, f3 = filters
 
@@ -236,10 +295,42 @@ class ConvolutionalBlock(layers.Layer):
 
         return x
 
+    def get_config(self):
+        config = super(ConvolutionalBlock, self).get_config()
+        config.update(
+            {
+                'filters': self.filters,
+                'f': self.f,
+                's': self.s,
 
+                'conv1': self.conv1,
+                'bn1': self.bn1,
+                'relu1': self.relu1,
+
+                'conv2': self.conv2,
+                'bn2': self.bn2,
+                'relu2': self.relu2,
+
+                'conv3': self.conv3,
+                'bn3': self.bn3,
+                'conv_short': self.conv_short,
+                'bn_short': self.bn_short,
+                'add': self.add,
+                'relu3': self.relu3,
+            }
+        )
+
+        return config
+
+@tf.keras.utils.register_keras_serializable()
 class ConvolutionalBlockTranspose(layers.Layer):
     def __init__(self, filters, f, s, **kwargs):
         super(ConvolutionalBlockTranspose, self).__init__(**kwargs)
+
+        self.filters = filters
+        self.f = f
+        self.s = s
+
 
         f1, f2, f3 = filters
 
@@ -273,6 +364,32 @@ class ConvolutionalBlockTranspose(layers.Layer):
         x = self.relu3(x)
 
         return x
+
+    def get_config(self):
+        config = super(ConvolutionalBlockTranspose, self).get_config()
+        config.update(
+            {
+                'filters': self.filters,
+                'f': self.f,
+                's': self.s,
+
+                'conv1': self.conv1,
+                'bn1': self.bn1,
+                'relu1': self.relu1,
+
+                'conv2': self.conv2,
+                'bn2': self.bn2,
+                'relu2': self.relu2,
+
+                'conv3': self.conv3,
+                'bn3': self.bn3,
+                'relu3': self.relu3
+            }
+        )
+
+        return config
+
+# https://towardsdatascience.com/how-to-write-a-custom-keras-model-so-that-it-can-be-deployed-for-serving-7d81ace4a1f8
 # https://keras.io/guides/making_new_layers_and_models_via_subclassing/
 # https://www.tensorflow.org/tutorials/customization/custom_layers
 # resnet50: https://colab.research.google.com/drive/1IWWqlc0KhJ7JaAF1Subu2DYAICwRN1_n

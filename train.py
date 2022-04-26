@@ -3,16 +3,21 @@ from models.autoencoder import *
 from utils.datasets import *
 from tensorflow.keras import callbacks
 import matplotlib.pyplot as plt
+import tensorflow_addons as tfa
 
 def run(
         epochs,
         batch_size,
         train_data,
         val_data,
+        grayscale,
         invert_color,
+        dilate,
         target_height,
         target_width,
         normalize,
+        binarize,
+        threshold,
         shuffle,
         cache
 ):
@@ -23,14 +28,18 @@ def run(
     #     img_dir=train_data,
     #     target_size=(target_height, target_width),
     #     batch_size=batch_size,
+    #     grayscale=grayscale
     #     invert_color=invert_color,
+    #     dilate=dilate,
     #     normalize=normalize
     # )
     # val_dataset = AddressDataset(
     #     img_dir=val_data,
     #     target_size=(target_height, target_width),
+    #     grayscale=grayscale
     #     batch_size=batch_size,
     #     invert_color=invert_color,
+    #     dilate=dilate,
     #     normalize=normalize
     # )
 
@@ -38,20 +47,30 @@ def run(
         img_dir=train_data,
         target_size=(target_height, target_width),
         batch_size=batch_size,
+        grayscale=grayscale,
         invert_color=invert_color,
+        dilate=dilate,
         normalize=normalize,
+        binarize=binarize,
+        threshold=threshold,
         shuffle=shuffle,
         cache=cache
     )
     val_dataset = get_tf_dataset(
         img_dir=val_data,
         target_size=(target_height, target_width),
+        grayscale=grayscale,
         batch_size=batch_size,
         invert_color=invert_color,
+        dilate=dilate,
         normalize=normalize,
+        binarize=binarize,
+        threshold=threshold,
         shuffle=False,
         cache=cache
     )
+
+    loss = 'mean_squared_error' if not binarize else tfa.losses.SigmoidFocalCrossEntropy()
 
     autoencoder.compile(
         optimizer='adam',
@@ -87,10 +106,14 @@ if __name__ == '__main__':
     ap.add_argument('--batch-size', default=32, type=int)
     ap.add_argument('--train-data', default='data/data_samples_2', type=str)
     ap.add_argument('--val-data', default='data/private_test', type=str)
+    ap.add_argument('--grayscale', default=True, type=bool)
     ap.add_argument('--invert-color', default=True, type=bool)
+    ap.add_argument('--dilate', default=0, type=int)
     ap.add_argument('--target-height', default=69, type=int) #69 133
     ap.add_argument('--target-width', default=773, type=int) #773 1925
     ap.add_argument('--normalize', default=True, type=bool)
+    ap.add_argument('--binarize', default=False, type=bool)
+    ap.add_argument('--threshold', default=0.5, type=float)
     ap.add_argument('--shuffle', default=False, type=bool)
     ap.add_argument('--cache', default=False, type=bool)
 
