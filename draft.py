@@ -31,6 +31,7 @@ train_dataset = get_tf_dataset(
 
 for imgs, _ in train_dataset.take(1):
     print(imgs.shape)
+
     for img in imgs:
         plt.imshow(img)
         plt.show()
