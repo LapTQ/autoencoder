@@ -37,30 +37,29 @@ class Encoder(models.Model):
             # 2nd stage
             ConvolutionalBlock(filters=[64, 64, 256], f=3, s=1),
             IdentityBlock(filters=[64, 64, 256], f=3),
-            # IdentityBlock(filters=[64, 64, 256], f=3),
+            IdentityBlock(filters=[64, 64, 256], f=3),
 
             # 3rd stage
             ConvolutionalBlock(filters=[128, 128, 512], f=3, s=2),
             IdentityBlock(filters=[128, 128, 512], f=3),
             IdentityBlock(filters=[128, 128, 512], f=3),
-            # IdentityBlock(filters=[128, 128, 512], f=3),
+            IdentityBlock(filters=[128, 128, 512], f=3),
 
             # 4th stage
             ConvolutionalBlock(filters=[256, 256, 1024], f=3, s=2),
             IdentityBlock(filters=[256, 256, 1024], f=3),
             IdentityBlock(filters=[256, 256, 1024], f=3),
-            # IdentityBlock(filters=[256, 256, 1024], f=3),
-            # IdentityBlock(filters=[256, 256, 1024], f=3),
-            # IdentityBlock(filters=[256, 256, 1024], f=3),
+            IdentityBlock(filters=[256, 256, 1024], f=3),
+            IdentityBlock(filters=[256, 256, 1024], f=3),
+            IdentityBlock(filters=[256, 256, 1024], f=3),
 
             # 5th stage
             ConvolutionalBlock(filters=[512, 512, 2048], f=3, s=2),
             IdentityBlock(filters=[512, 512, 2048], f=3),
-            # IdentityBlock(filters=[512, 512, 2048], f=3),
+            IdentityBlock(filters=[512, 512, 2048], f=3),
 
             # latent feature
             layers.Conv2D(filters=1, kernel_size=1, strides=1)
-
 
         ])
 
@@ -76,25 +75,25 @@ class Decoder(models.Model):
         self.sequential = keras.Sequential([
             layers.Conv2DTranspose(filters=2048, kernel_size=1, strides=1),
 
-            # IdentityBlockTranspose(filters=[512, 512, 2048], f=3),
+            IdentityBlockTranspose(filters=[512, 512, 2048], f=3),
             IdentityBlockTranspose(filters=[512, 512, 2048], f=3),
             ConvolutionalBlockTranspose(filters=[512, 512, 1024], f=3, s=2),
 
-            # IdentityBlockTranspose(filters=[256, 256, 1024], f=3),
-            # IdentityBlockTranspose(filters=[256, 256, 1024], f=3),
-            # IdentityBlockTranspose(filters=[256, 256, 1024], f=3),
+            IdentityBlockTranspose(filters=[256, 256, 1024], f=3),
+            IdentityBlockTranspose(filters=[256, 256, 1024], f=3),
+            IdentityBlockTranspose(filters=[256, 256, 1024], f=3),
             IdentityBlockTranspose(filters=[256, 256, 1024], f=3),
             IdentityBlockTranspose(filters=[256, 256, 1024], f=3),
             ConvolutionalBlockTranspose(filters=[256, 256, 512], f=3, s=2),
 
 
-            # IdentityBlockTranspose(filters=[128, 128, 512], f=3),
+            IdentityBlockTranspose(filters=[128, 128, 512], f=3),
             IdentityBlockTranspose(filters=[128, 128, 512], f=3),
             IdentityBlockTranspose(filters=[128, 128, 512], f=3),
             ConvolutionalBlockTranspose(filters=[128, 128, 256], f=3, s=2),
 
 
-            # IdentityBlockTranspose(filters=[64, 64, 256], f=3),
+            IdentityBlockTranspose(filters=[64, 64, 256], f=3),
             IdentityBlockTranspose(filters=[64, 64, 256], f=3),
             ConvolutionalBlockTranspose(filters=[64, 64, 64], f=3, s=1),
 
