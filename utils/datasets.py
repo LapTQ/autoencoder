@@ -24,6 +24,11 @@ def load_img(path, invert_color, target_size=None):
 
     return img
 
+def process_img(img):
+    img = img / 255.
+
+    return img
+
 class AddressDataset(keras.utils.Sequence):
     """Iterate over the data as Numpy array.
     Reference: https://keras.io/examples/vision/oxford_pets_image_segmentation/
@@ -47,7 +52,7 @@ class AddressDataset(keras.utils.Sequence):
 
         for j, path in enumerate(self.img_paths[i: i + img_num]):
             img = load_img(path, invert_color=self.invert_color, target_size=self.target_size)
-            img = img / 255.
+            img = process_img(img)
             x[j] = img
 
         if self.batch_size is None:

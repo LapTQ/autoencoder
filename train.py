@@ -3,7 +3,7 @@ from models.autoencoder import *
 from utils.datasets import *
 from tensorflow.keras import callbacks
 
-def train(
+def run(
         epochs,
         batch_size,
         train_data,
@@ -37,7 +37,7 @@ def train(
     callback_list = [
         callbacks.ReduceLROnPlateau(monitor='loss', factor=0.1, patience=3, verbose=1),
         callbacks.EarlyStopping(monitor='val_loss', patience=5, verbose=1, restore_best_weights=True),
-        callbacks.ModelCheckpoint(filepath='checkpoints/checkpoint.hdf5', save_best_only=True)
+        callbacks.ModelCheckpoint(filepath='checkpoints/checkpoint', save_best_only=True)
     ]
 
     autoencoder.fit(
@@ -61,4 +61,4 @@ if __name__ == '__main__':
 
     args = vars(ap.parse_args())
 
-    train(**args)
+    run(**args)
