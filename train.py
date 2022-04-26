@@ -12,24 +12,45 @@ def run(
         invert_color,
         target_height,
         target_width,
-        normalize
+        normalize,
+        shuffle,
+        cache
 ):
 
     autoencoder = Autoencoder()
 
-    train_dataset = AddressDataset(
+    # train_dataset = AddressDataset(
+    #     img_dir=train_data,
+    #     target_size=(target_height, target_width),
+    #     batch_size=batch_size,
+    #     invert_color=invert_color,
+    #     normalize=normalize
+    # )
+    # val_dataset = AddressDataset(
+    #     img_dir=val_data,
+    #     target_size=(target_height, target_width),
+    #     batch_size=batch_size,
+    #     invert_color=invert_color,
+    #     normalize=normalize
+    # )
+
+    train_dataset = get_tf_dataset(
         img_dir=train_data,
         target_size=(target_height, target_width),
         batch_size=batch_size,
         invert_color=invert_color,
-        normalize=normalize
+        normalize=normalize,
+        shuffle=shuffle,
+        cache=cache
     )
-    val_dataset = AddressDataset(
+    val_dataset = get_tf_dataset(
         img_dir=val_data,
         target_size=(target_height, target_width),
         batch_size=batch_size,
         invert_color=invert_color,
-        normalize=normalize
+        normalize=normalize,
+        shuffle=False,
+        cache=cache
     )
 
     autoencoder.compile(
@@ -70,6 +91,8 @@ if __name__ == '__main__':
     ap.add_argument('--target-height', default=69, type=int) #69 133
     ap.add_argument('--target-width', default=773, type=int) #773 1925
     ap.add_argument('--normalize', default=True, type=bool)
+    ap.add_argument('--shuffle', default=False, type=bool)
+    ap.add_argument('--cache', default=False, type=bool)
 
     args = vars(ap.parse_args())
 
