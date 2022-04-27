@@ -40,9 +40,14 @@ def run(
 
     plt.figure(figsize=(20, 8))
     plt.subplot(2, 1, 1)
-    plt.imshow(img)
+    plt.imshow(np.squeeze(img))
+    plt.axis('off')
+    plt.tight_layout()
     plt.subplot(2, 1, 2)
-    plt.imshow(img_decoded)
+    plt.imshow(np.squeeze(img_decoded))
+    plt.axis('off')
+    plt.tight_layout()
+    plt.savefig('val_img.jpg')
     plt.show()
 
 if __name__ == '__main__':

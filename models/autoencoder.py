@@ -88,12 +88,10 @@ class Decoder(models.Model):
             IdentityBlockTranspose(filters=[256, 256, 1024], f=3),
             ConvolutionalBlockTranspose(filters=[256, 256, 512], f=3, s=2),
 
-
             # IdentityBlockTranspose(filters=[128, 128, 512], f=3),
             IdentityBlockTranspose(filters=[128, 128, 512], f=3),
             IdentityBlockTranspose(filters=[128, 128, 512], f=3),
             ConvolutionalBlockTranspose(filters=[128, 128, 256], f=3, s=2),
-
 
             # IdentityBlockTranspose(filters=[64, 64, 256], f=3),
             IdentityBlockTranspose(filters=[64, 64, 256], f=3),
@@ -342,7 +340,6 @@ class ConvolutionalBlockTranspose(layers.Layer):
         self.filters = filters
         self.f = f
         self.s = s
-
 
         f1, f2, f3 = filters
 

@@ -1,15 +1,18 @@
 import argparse
 from models.autoencoder import *
 from utils.datasets import *
-from tensorflow.keras import callbacks
+from tensorflow import keras
 import matplotlib.pyplot as plt
 import tensorflow_addons as tfa
 
 def run(
+        pretrained,
         epochs,
         batch_size,
         train_data,
         val_data,
+        reduce_lr_patience,
+        early_stop_patience,
         grayscale,
         invert_color,
         dilate,
@@ -22,7 +25,12 @@ def run(
         cache
 ):
 
-    autoencoder = Autoencoder()
+    if pretrained is None:
+        autoencoder = keras.models.load_model(pretrained)
+        print('[LOG] Load pretrained model successfully')
+    else:
+        autoencoder = Autoencoder()
+        print('[LOG] New model instance')
 
     # train_dataset = AddressDataset(
     #     img_dir=train_data,
@@ -71,17 +79,17 @@ def run(
     )
 
     loss = 'mean_squared_error' if not binarize else tfa.losses.SigmoidFocalCrossEntropy()
-    print('[LOG]: ', loss)
+    print('[LOG] Using loss', loss)
 
     autoencoder.compile(
         optimizer='adam',
-        loss='mean_squared_error'
+        loss=loss
     )
 
-    callback_list = [
-        callbacks.ReduceLROnPlateau(monitor='loss', factor=0.1, patience=3, verbose=1),
-        callbacks.EarlyStopping(monitor='val_loss', patience=5, verbose=1, restore_best_weights=True),
-        callbacks.ModelCheckpoint(filepath='checkpoints/checkpoint', save_best_only=True)
+    callbacks = [
+        keras.callbacks.ReduceLROnPlateau(monitor='loss', factor=0.1, patience=reduce_lr_patience, verbose=1),
+        keras.callbacks.EarlyStopping(monitor='val_loss', patience=early_stop_patience, verbose=1, restore_best_weights=True),
+        keras.callbacks.ModelCheckpoint(filepath='checkpoints/checkpoint', save_best_only=True)
     ]
 
     history = autoencoder.fit(
@@ -89,7 +97,7 @@ def run(
         epochs=epochs,
         shuffle=True,
         validation_data=val_dataset,
-        callbacks=callback_list
+        callbacks=callbacks
     )
 
     epoch_range = range(1, len(history.history['loss']) + 1)
@@ -122,10 +130,13 @@ def run(
 if __name__ == '__main__':
     ap = argparse.ArgumentParser()
 
+    ap.add_argument('--pretrained', default=None, type=str)
     ap.add_argument('--epochs', default=24, type=int)
     ap.add_argument('--batch-size', default=32, type=int)
     ap.add_argument('--train-data', default='data/data_samples_2', type=str)
     ap.add_argument('--val-data', default='data/private_test', type=str)
+    ap.add_argument('--reduce-lr-patience', default=5, type=int)
+    ap.add_argument('--early-stop-patience', default=10, type=int)
     ap.add_argument('--grayscale', default=True, type=bool)
     ap.add_argument('--invert-color', default=True, type=bool)
     ap.add_argument('--dilate', default=0, type=int)
