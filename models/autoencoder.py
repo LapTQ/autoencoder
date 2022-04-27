@@ -162,23 +162,27 @@ class IdentityBlock(layers.Layer):
                 'filters': self.filters,
                 'f': self.f,
 
-                'conv1': self.conv1,
-                'bn1': self.bn1,
-                'relu1': self.relu1,
-
-                'conv2': self.conv2,
-                'bn2': self.bn2,
-                'relu2': self.relu2,
-
-                'conv3': self.conv3,
-                'bn3': self.bn3,
-
-                'add': self.add,
-                'relu3': self.relu3
+                # 'conv1': self.conv1,
+                # 'bn1': self.bn1,
+                # 'relu1': self.relu1,
+                #
+                # 'conv2': self.conv2,
+                # 'bn2': self.bn2,
+                # 'relu2': self.relu2,
+                #
+                # 'conv3': self.conv3,
+                # 'bn3': self.bn3,
+                #
+                # 'add': self.add,
+                # 'relu3': self.relu3
             }
         )
 
         return config
+
+    @classmethod
+    def from_config(cls, config):
+        return cls(**config)
 
 @tf.keras.utils.register_keras_serializable()
 class IdentityBlockTranspose(layers.Layer):
@@ -228,21 +232,25 @@ class IdentityBlockTranspose(layers.Layer):
                 'filters': self.filters,
                 'f': self.f,
 
-                'conv1': self.conv1,
-                'bn1': self.bn1,
-                'relu1': self.relu1,
-
-                'conv2': self.conv2,
-                'bn2': self.bn2,
-                'relu2': self.relu2,
-
-                'conv3': self.conv3,
-                'bn3': self.bn3,
-                'relu3': self.relu3,
+                # 'conv1': self.conv1,
+                # 'bn1': self.bn1,
+                # 'relu1': self.relu1,
+                #
+                # 'conv2': self.conv2,
+                # 'bn2': self.bn2,
+                # 'relu2': self.relu2,
+                #
+                # 'conv3': self.conv3,
+                # 'bn3': self.bn3,
+                # 'relu3': self.relu3,
             }
         )
 
         return config
+
+    @classmethod
+    def from_config(cls, config):
+        return cls(**config)
 
 @tf.keras.utils.register_keras_serializable()
 class ConvolutionalBlock(layers.Layer):
@@ -303,24 +311,28 @@ class ConvolutionalBlock(layers.Layer):
                 'f': self.f,
                 's': self.s,
 
-                'conv1': self.conv1,
-                'bn1': self.bn1,
-                'relu1': self.relu1,
-
-                'conv2': self.conv2,
-                'bn2': self.bn2,
-                'relu2': self.relu2,
-
-                'conv3': self.conv3,
-                'bn3': self.bn3,
-                'conv_short': self.conv_short,
-                'bn_short': self.bn_short,
-                'add': self.add,
-                'relu3': self.relu3,
+                # 'conv1': self.conv1,
+                # 'bn1': self.bn1,
+                # 'relu1': self.relu1,
+                #
+                # 'conv2': self.conv2,
+                # 'bn2': self.bn2,
+                # 'relu2': self.relu2,
+                #
+                # 'conv3': self.conv3,
+                # 'bn3': self.bn3,
+                # 'conv_short': self.conv_short,
+                # 'bn_short': self.bn_short,
+                # 'add': self.add,
+                # 'relu3': self.relu3,
             }
         )
 
         return config
+
+    @classmethod
+    def from_config(cls, config):
+        return cls(**config)
 
 @tf.keras.utils.register_keras_serializable()
 class ConvolutionalBlockTranspose(layers.Layer):
@@ -373,21 +385,25 @@ class ConvolutionalBlockTranspose(layers.Layer):
                 'f': self.f,
                 's': self.s,
 
-                'conv1': self.conv1,
-                'bn1': self.bn1,
-                'relu1': self.relu1,
-
-                'conv2': self.conv2,
-                'bn2': self.bn2,
-                'relu2': self.relu2,
-
-                'conv3': self.conv3,
-                'bn3': self.bn3,
-                'relu3': self.relu3
+                # 'conv1': self.conv1,
+                # 'bn1': self.bn1,
+                # 'relu1': self.relu1,
+                #
+                # 'conv2': self.conv2,
+                # 'bn2': self.bn2,
+                # 'relu2': self.relu2,
+                #
+                # 'conv3': self.conv3,
+                # 'bn3': self.bn3,
+                # 'relu3': self.relu3
             }
         )
 
         return config
+
+    @classmethod
+    def from_config(cls, config):
+        return cls(**config)
 
 # https://towardsdatascience.com/how-to-write-a-custom-keras-model-so-that-it-can-be-deployed-for-serving-7d81ace4a1f8
 # https://keras.io/guides/making_new_layers_and_models_via_subclassing/
