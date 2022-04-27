@@ -5,23 +5,32 @@ from tensorflow.keras import models, callbacks
 import matplotlib.pyplot as plt
 
 def run(
-        weights,
+        pretrained,
         img,
+        grayscale,
         invert_color,
+        dilate,
         target_height,
-        target_width
+        target_width,
+        normalize,
+        binarize,
+        threshold,
 ):
 
     img = load_img(img)
     img = process_img(
         img,
+        grayscale=grayscale,
         invert_color=invert_color,
+        dilate=dilate,
         target_size=(target_height, target_width),
-        normalize=True
+        normalize=normalize,
+        binarize=binarize,
+        threshold=threshold,
     )
     img = np.expand_dims(img, axis=0)
 
-    autoencoder = models.load_model(weights)
+    autoencoder = models.load_model(pretrained)
 
     # autoencoder = Autoencoder()
     # autoencoder(img)
@@ -39,11 +48,16 @@ def run(
 if __name__ == '__main__':
     ap = argparse.ArgumentParser()
 
-    ap.add_argument('--weights', default='checkpoints/checkpoint', type=str)
+    ap.add_argument('--pretrained', default='checkpoints/checkpoint', type=str)
     ap.add_argument('--img', default='data/private_test/0000_tests.png', type=str)
+    ap.add_argument('--grayscale', default=True, type=bool)
     ap.add_argument('--invert-color', default=True, type=bool)
+    ap.add_argument('--dilate', default=0, type=int)
     ap.add_argument('--target-height', default=133, type=int)
     ap.add_argument('--target-width', default=1925, type=int)
+    ap.add_argument('--normalize', default=True, type=bool)
+    ap.add_argument('--binarize', default=False, type=bool)
+    ap.add_argument('--threshold', default=0.5, type=float)
 
     args = vars(ap.parse_args())
 

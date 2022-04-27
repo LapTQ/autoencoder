@@ -64,7 +64,7 @@ def process_img(
         img = img / 255
 
     if binarize:
-        img = tf.where(img > threshold, 1, 0)
+        img = tf.where(img > threshold, 1., 0.)
 
     return img
 

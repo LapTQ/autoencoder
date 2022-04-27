@@ -71,6 +71,7 @@ def run(
     )
 
     loss = 'mean_squared_error' if not binarize else tfa.losses.SigmoidFocalCrossEntropy()
+    print('[LOG]: ', loss)
 
     autoencoder.compile(
         optimizer='adam',
@@ -97,7 +98,26 @@ def run(
     plt.xlabel('epoch')
     plt.ylabel('loss')
     plt.legend()
+    plt.savefig('loss.jpg')
     plt.show()
+
+    for (images, _) in val_dataset.take(1):
+        plt.figure(figsize=(20, batch_size * 5))
+        decoded_images = autoencoder.predict(images)
+        i = 0
+        for img, decoded_img in zip(images, decoded_images):
+            plt.subplot(batch_size * 2, 1, 2*i + 1)
+            plt.imshow(np.squeeze(img))
+            plt.axis('off')
+            plt.tight_layout()
+            plt.subplot(batch_size * 2, 1, 2*i + 2)
+            plt.imshow(np.squeeze(decoded_img))
+            plt.axis('off')
+            plt.tight_layout()
+            i += 1
+        plt.savefig('results.jpg')
+        plt.show()
+
 
 if __name__ == '__main__':
     ap = argparse.ArgumentParser()
