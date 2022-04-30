@@ -9,8 +9,14 @@ def load_img(path):
     return img
 
 def dilate_img(img):
-    # img is of shape (H, W, C)
+    """
+    Grow a single image.
+    :param img: numpy array of shape (H, W, C)
+    :return: numpy array of shape (H, W, C)
+    """
+
     kernel = tf.ones((3, 3, img.shape[-1]), dtype=img.dtype)
+    # tf.nn.dilation2d works with batch of images, not a single image
     img = tf.nn.dilation2d(
         tf.expand_dims(img, axis=0),
         filters=kernel,

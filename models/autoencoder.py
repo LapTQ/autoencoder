@@ -404,6 +404,7 @@ class ConvolutionalBlockTranspose(layers.Layer):
 
 # https://towardsdatascience.com/how-to-write-a-custom-keras-model-so-that-it-can-be-deployed-for-serving-7d81ace4a1f8
 # https://keras.io/guides/making_new_layers_and_models_via_subclassing/
+# https://keras.io/guides/serialization_and_saving/
 # https://www.tensorflow.org/tutorials/customization/custom_layers
 # resnet50: https://colab.research.google.com/drive/1IWWqlc0KhJ7JaAF1Subu2DYAICwRN1_n
 # https://github.com/Horizon2333/imagenet-autoencoder/blob/main/models/resnet.py
